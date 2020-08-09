@@ -1,10 +1,8 @@
-import random
 import numpy as np
 import torch
+from random import randint
 
-from utils.datasets import letterbox
-from utils.utils import check_img_size, non_max_suppression, scale_coords, plot_one_box
-from utils.torch_utils import select_device
+from utils.general import *
 
 class Detect:
 
@@ -51,7 +49,7 @@ class Detect:
 
         # Get names and colors
         self.names = model.module.names if hasattr(model, 'module') else model.names
-        self.colors = [[random.randint(0, 255) for _ in range(3)] for _ in range(len(self.names))]
+        self.colors = [[randint(0, 255) for _ in range(3)] for _ in range(len(self.names))]
 
         # Run inference
         img = torch.zeros((1, 3, imgsz, imgsz), device=device)  # init img
@@ -154,8 +152,7 @@ if __name__ == '__main__':
             'dog'
     ]
 
-    # d = Detect('weights/yolov5s17.pt')
-    d = Detect('weights/best.pt')
+    d = Detect('weights/yolov5s17.pt')
     
     img = cv2.imread('/tmp/car/11.jpg')
     bbox = d(img)
